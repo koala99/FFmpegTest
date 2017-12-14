@@ -1,0 +1,4 @@
+/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/QtFFmpeg.dir
+/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/QtFFmpeg_autogen.dir

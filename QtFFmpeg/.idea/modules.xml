@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/FFmpegDemo.iml" filepath="$PROJECT_DIR$/.idea/FFmpegDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/QtFFmpeg.iml" filepath="$PROJECT_DIR$/.idea/QtFFmpeg.iml" />
     </modules>
   </component>
 </project>
