@@ -14,6 +14,8 @@ using namespace std;
 
 
 class FFmpegUtils {
+
+
 protected:
     FFmpegUtils();
 
@@ -25,11 +27,11 @@ protected:
     AVCodecContext *videoCtx;
 
     QMutex mutex;
-    int videoStream, audioStream;
-
-    int totalSec = 0;
 
 public:
+    int videoStream, audioStream;
+    int totalSec = 0;
+
     static FFmpegUtils *Get() {
         static FFmpegUtils ff;
         return &ff;
@@ -45,7 +47,7 @@ public:
 
     string getError();
 
-    bool toRgb(const AVFrame *yuv, int outwidth,
+    bool toRgb(const AVFrame *yuv,char *out, int outwidth,
                int outheight);
     //析构函数
 //    virtual ~FFmpegUtils();

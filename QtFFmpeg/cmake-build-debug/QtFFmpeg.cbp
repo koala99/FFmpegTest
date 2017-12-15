@@ -132,24 +132,17 @@
 		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/FFmpegUtils.h">
 			<Option target="QtFFmpeg"/>
 		</Unit>
-		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/QtFFmpeg_autogen/mocs_compilation.cpp">
+		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/VideoWidget.cpp">
 			<Option target="QtFFmpeg"/>
 		</Unit>
-		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/ui_mainwindow.h">
+		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/VideoWidget.h">
+			<Option target="QtFFmpeg"/>
+		</Unit>
+		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/QtFFmpeg_autogen/mocs_compilation.cpp">
 			<Option target="QtFFmpeg"/>
 		</Unit>
 		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/main.cpp">
 			<Option target="QtFFmpeg"/>
-		</Unit>
-		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/mainwindow.cpp">
-			<Option target="QtFFmpeg"/>
-		</Unit>
-		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/mainwindow.h">
-			<Option target="QtFFmpeg"/>
-		</Unit>
-		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/mainwindow.ui">
-			<Option target="QtFFmpeg"/>
-			<Option target="QtFFmpeg_autogen"/>
 		</Unit>
 		<Unit filename="/Users/lilei/cpp_works/QtFFmpeg/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

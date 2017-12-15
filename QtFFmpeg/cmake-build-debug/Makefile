@@ -190,6 +190,33 @@ QtFFmpeg_autogen/mocs_compilation.cpp.s:
 	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.s
 .PHONY : QtFFmpeg_autogen/mocs_compilation.cpp.s
 
+VideoWidget.o: VideoWidget.cpp.o
+
+.PHONY : VideoWidget.o
+
+# target to build an object file
+VideoWidget.cpp.o:
+	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o
+.PHONY : VideoWidget.cpp.o
+
+VideoWidget.i: VideoWidget.cpp.i
+
+.PHONY : VideoWidget.i
+
+# target to preprocess a source file
+VideoWidget.cpp.i:
+	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.i
+.PHONY : VideoWidget.cpp.i
+
+VideoWidget.s: VideoWidget.cpp.s
+
+.PHONY : VideoWidget.s
+
+# target to generate assembly for a file
+VideoWidget.cpp.s:
+	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.s
+.PHONY : VideoWidget.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -217,33 +244,6 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-mainwindow.o: mainwindow.cpp.o
-
-.PHONY : mainwindow.o
-
-# target to build an object file
-mainwindow.cpp.o:
-	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o
-.PHONY : mainwindow.cpp.o
-
-mainwindow.i: mainwindow.cpp.i
-
-.PHONY : mainwindow.i
-
-# target to preprocess a source file
-mainwindow.cpp.i:
-	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.i
-.PHONY : mainwindow.cpp.i
-
-mainwindow.s: mainwindow.cpp.s
-
-.PHONY : mainwindow.s
-
-# target to generate assembly for a file
-mainwindow.cpp.s:
-	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.s
-.PHONY : mainwindow.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -260,12 +260,12 @@ help:
 	@echo "... QtFFmpeg_autogen/mocs_compilation.o"
 	@echo "... QtFFmpeg_autogen/mocs_compilation.i"
 	@echo "... QtFFmpeg_autogen/mocs_compilation.s"
+	@echo "... VideoWidget.o"
+	@echo "... VideoWidget.i"
+	@echo "... VideoWidget.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... mainwindow.o"
-	@echo "... mainwindow.i"
-	@echo "... mainwindow.s"
 .PHONY : help
 
 

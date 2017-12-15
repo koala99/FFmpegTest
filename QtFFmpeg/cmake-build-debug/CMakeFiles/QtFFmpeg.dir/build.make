@@ -57,13 +57,9 @@ include CMakeFiles/QtFFmpeg.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/QtFFmpeg.dir/flags.make
 
-ui_mainwindow.h: ../mainwindow.ui
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating ui_mainwindow.h"
-	/usr/local/Cellar/qt/5.10.0/bin/uic -o /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/ui_mainwindow.h /Users/lilei/cpp_works/QtFFmpeg/mainwindow.ui
-
 CMakeFiles/QtFFmpeg.dir/main.cpp.o: CMakeFiles/QtFFmpeg.dir/flags.make
 CMakeFiles/QtFFmpeg.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/QtFFmpeg.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/QtFFmpeg.dir/main.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/QtFFmpeg.dir/main.cpp.o -c /Users/lilei/cpp_works/QtFFmpeg/main.cpp
 
 CMakeFiles/QtFFmpeg.dir/main.cpp.i: cmake_force
@@ -85,33 +81,33 @@ CMakeFiles/QtFFmpeg.dir/main.cpp.o.provides: CMakeFiles/QtFFmpeg.dir/main.cpp.o.
 CMakeFiles/QtFFmpeg.dir/main.cpp.o.provides.build: CMakeFiles/QtFFmpeg.dir/main.cpp.o
 
 
-CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o: CMakeFiles/QtFFmpeg.dir/flags.make
-CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o: ../mainwindow.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o -c /Users/lilei/cpp_works/QtFFmpeg/mainwindow.cpp
+CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o: CMakeFiles/QtFFmpeg.dir/flags.make
+CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o: ../VideoWidget.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o -c /Users/lilei/cpp_works/QtFFmpeg/VideoWidget.cpp
 
-CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/lilei/cpp_works/QtFFmpeg/mainwindow.cpp > CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.i
+CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/lilei/cpp_works/QtFFmpeg/VideoWidget.cpp > CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.i
 
-CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/lilei/cpp_works/QtFFmpeg/mainwindow.cpp -o CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.s
+CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/lilei/cpp_works/QtFFmpeg/VideoWidget.cpp -o CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.s
 
-CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o.requires:
+CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o.requires:
 
-.PHONY : CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o.requires
+.PHONY : CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o.requires
 
-CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o.provides: CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o.requires
-	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o.provides.build
-.PHONY : CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o.provides
+CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o.provides: CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o.requires
+	$(MAKE) -f CMakeFiles/QtFFmpeg.dir/build.make CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o.provides.build
+.PHONY : CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o.provides
 
-CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o.provides.build: CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o
+CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o.provides.build: CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o
 
 
 CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o: CMakeFiles/QtFFmpeg.dir/flags.make
 CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o: ../FFmpegUtils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o -c /Users/lilei/cpp_works/QtFFmpeg/FFmpegUtils.cpp
 
 CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.i: cmake_force
@@ -135,7 +131,7 @@ CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o.provides.build: CMakeFiles/QtFFmpeg.di
 
 CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o: CMakeFiles/QtFFmpeg.dir/flags.make
 CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o: QtFFmpeg_autogen/mocs_compilation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o -c /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/QtFFmpeg_autogen/mocs_compilation.cpp
 
 CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.i: cmake_force
@@ -160,7 +156,7 @@ CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o.provides.build: 
 # Object files for target QtFFmpeg
 QtFFmpeg_OBJECTS = \
 "CMakeFiles/QtFFmpeg.dir/main.cpp.o" \
-"CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o" \
+"CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o" \
 "CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o" \
 "CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o"
 
@@ -168,7 +164,7 @@ QtFFmpeg_OBJECTS = \
 QtFFmpeg_EXTERNAL_OBJECTS =
 
 QtFFmpeg: CMakeFiles/QtFFmpeg.dir/main.cpp.o
-QtFFmpeg: CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o
+QtFFmpeg: CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o
 QtFFmpeg: CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o
 QtFFmpeg: CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o
 QtFFmpeg: CMakeFiles/QtFFmpeg.dir/build.make
@@ -176,7 +172,7 @@ QtFFmpeg: /usr/local/Cellar/qt/5.10.0/lib/QtWidgets.framework/QtWidgets
 QtFFmpeg: /usr/local/Cellar/qt/5.10.0/lib/QtGui.framework/QtGui
 QtFFmpeg: /usr/local/Cellar/qt/5.10.0/lib/QtCore.framework/QtCore
 QtFFmpeg: CMakeFiles/QtFFmpeg.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable QtFFmpeg"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable QtFFmpeg"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/QtFFmpeg.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -185,7 +181,7 @@ CMakeFiles/QtFFmpeg.dir/build: QtFFmpeg
 .PHONY : CMakeFiles/QtFFmpeg.dir/build
 
 CMakeFiles/QtFFmpeg.dir/requires: CMakeFiles/QtFFmpeg.dir/main.cpp.o.requires
-CMakeFiles/QtFFmpeg.dir/requires: CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o.requires
+CMakeFiles/QtFFmpeg.dir/requires: CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o.requires
 CMakeFiles/QtFFmpeg.dir/requires: CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o.requires
 CMakeFiles/QtFFmpeg.dir/requires: CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o.requires
 
@@ -195,7 +191,7 @@ CMakeFiles/QtFFmpeg.dir/clean:
 	$(CMAKE_COMMAND) -P CMakeFiles/QtFFmpeg.dir/cmake_clean.cmake
 .PHONY : CMakeFiles/QtFFmpeg.dir/clean
 
-CMakeFiles/QtFFmpeg.dir/depend: ui_mainwindow.h
+CMakeFiles/QtFFmpeg.dir/depend:
 	cd /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/lilei/cpp_works/QtFFmpeg /Users/lilei/cpp_works/QtFFmpeg /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/QtFFmpeg.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/QtFFmpeg.dir/depend
 

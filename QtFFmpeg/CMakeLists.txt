@@ -22,10 +22,10 @@ find_package(Qt5Widgets REQUIRED)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-set(CMAKE_AUTOUIC ON) # .ui files
+set(CMAKE_AUTOUIC OFF) # .ui files
 set(CMAKE_AUTORCC ON)
 
-qt5_wrap_ui(ui_FILES mainwindow.ui)
+#qt5_wrap_ui(ui_FILES VideoWidget.ui) //不使用布局文件，代码流
 
 #SET(CMAKE_C_COMPILER "/usr/local/Cellar/gcc/7.2.0/bin/gcc-7")
 #SET(CMAKE_CXX_COMPILER "/usr/local/Cellar/gcc/7.2.0/bin/g++-7")
@@ -33,7 +33,7 @@ qt5_wrap_ui(ui_FILES mainwindow.ui)
 
 
 
-set(SOURCE_FILES main.cpp mainwindow.cpp mainwindow.h
+set(SOURCE_FILES main.cpp VideoWidget.h VideoWidget.cpp
         FFmpegUtils.cpp FFmpegUtils.h
         ${ui_FILES})
 

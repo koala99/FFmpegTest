@@ -6,8 +6,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/lilei/cpp_works/QtFFmpeg/FFmpegUtils.cpp" "/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/QtFFmpeg.dir/FFmpegUtils.cpp.o"
   "/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/QtFFmpeg_autogen/mocs_compilation.cpp" "/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/QtFFmpeg.dir/QtFFmpeg_autogen/mocs_compilation.cpp.o"
+  "/Users/lilei/cpp_works/QtFFmpeg/VideoWidget.cpp" "/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/QtFFmpeg.dir/VideoWidget.cpp.o"
   "/Users/lilei/cpp_works/QtFFmpeg/main.cpp" "/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/QtFFmpeg.dir/main.cpp.o"
-  "/Users/lilei/cpp_works/QtFFmpeg/mainwindow.cpp" "/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/QtFFmpeg.dir/mainwindow.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 

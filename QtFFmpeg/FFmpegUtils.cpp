@@ -21,8 +21,8 @@ bool FFmpegUtils::openVideo(const char *path) {
             AVCodec *codec = avcodec_find_decoder(enc->codec_id);
             if (!codec) {
                 printf("can't find video codec");
-                return true;
                 mutex.unlock();
+                return true;
             }
             videoCtx = enc;
             int err = avcodec_open2(enc, codec, NULL);
@@ -106,7 +106,7 @@ AVFrame *FFmpegUtils::decodeMedia(const AVPacket *pkt) {
     return yuvFrame;
 }
 
-bool FFmpegUtils::toRgb(const AVFrame *yuv, int outWidth,
+bool FFmpegUtils::toRgb(const AVFrame *yuv, char *out, int outWidth,
                         int outHeight) {
 
     mutex.lock();
@@ -115,8 +115,9 @@ bool FFmpegUtils::toRgb(const AVFrame *yuv, int outWidth,
                                   videoCtx->pix_fmt, outWidth, outHeight,
                                   AV_PIX_FMT_BGRA, SWS_BICUBIC, NULL, NULL, NULL);
     uint8_t *data[AV_NUM_DATA_POINTERS] = {0};
-    char *rgb = new char[outWidth * outHeight * 4];
-    data[0] = (uint8_t *) rgb;
+//    char *rgb = new char[outWidth * outHeight * 4];
+//    data[0] = (uint8_t *) rgb;
+    data[0] = (uint8_t *) out;
     int linesize[AV_NUM_DATA_POINTERS] = {0};
     linesize[0] = outWidth * 4;
     int h = sws_scale(swsCtx, yuv->data, yuv->linesize, 0,

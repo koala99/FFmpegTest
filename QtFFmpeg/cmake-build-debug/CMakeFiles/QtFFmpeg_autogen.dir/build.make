@@ -53,16 +53,11 @@ CMAKE_BINARY_DIR = /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug
 # Include the progress variables for this target.
 include CMakeFiles/QtFFmpeg_autogen.dir/progress.make
 
-CMakeFiles/QtFFmpeg_autogen: ui_mainwindow.h
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC, UIC and RCC for target QtFFmpeg"
+CMakeFiles/QtFFmpeg_autogen:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and RCC for target QtFFmpeg"
 	/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_autogen /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles/QtFFmpeg_autogen.dir Debug
 
-ui_mainwindow.h: ../mainwindow.ui
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating ui_mainwindow.h"
-	/usr/local/Cellar/qt/5.10.0/bin/uic -o /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug/ui_mainwindow.h /Users/lilei/cpp_works/QtFFmpeg/mainwindow.ui
-
 QtFFmpeg_autogen: CMakeFiles/QtFFmpeg_autogen
-QtFFmpeg_autogen: ui_mainwindow.h
 QtFFmpeg_autogen: CMakeFiles/QtFFmpeg_autogen.dir/build.make
 
 .PHONY : QtFFmpeg_autogen
