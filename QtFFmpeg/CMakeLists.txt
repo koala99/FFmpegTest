@@ -16,8 +16,11 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_PREFIX_PATH "/usr/local/Cellar/qt/5.10.0")
 
+#find_package(Qt5 REQUIRED)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
+
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -34,14 +37,16 @@ set(CMAKE_AUTORCC ON)
 
 
 set(SOURCE_FILES main.cpp VideoWidget.h VideoWidget.cpp
-        FFmpegUtils.cpp FFmpegUtils.h
-        ${ui_FILES})
+        FFmpegUtils.cpp FFmpegUtils.h VideoThread.cpp VideoThread.h
+        AudioPlay.h AudioPlay.cpp
+      )
+#  ${ui_FILES}
 
-
-
+#find_package(Qt5 REQUIRED)
 
 add_executable(QtFFmpeg  ${SOURCE_FILES})
 
+#target_link_libraries(learn_qt_clion ${QT_LIBRARIES} )
 
 target_link_libraries(
         QtFFmpeg
@@ -58,4 +63,5 @@ target_link_libraries(
         Qt5::Widgets
         Qt5::Core
         Qt5::Gui
+        Qt5::Multimedia
 )

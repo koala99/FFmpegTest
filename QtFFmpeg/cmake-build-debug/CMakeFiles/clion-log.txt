@@ -1,0 +1,4 @@
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH==/usr/local/Cellar/qt/5.10.0/lib/cmake -G "CodeBlocks - Unix Makefiles" /Users/lilei/cpp_works/QtFFmpeg
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/lilei/cpp_works/QtFFmpeg/cmake-build-debug

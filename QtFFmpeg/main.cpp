@@ -8,12 +8,9 @@
 #include "FFmpegUtils.h"
 
 
+
 int decodeVideo();
 
-static double r2d(AVRational avRational) {
-    return avRational.num == 0 ? 0 : (double) avRational.num / (double) avRational.den;
-
-}
 
 int main(int argc, char *argv[]) {
     QScopedPointer<QApplication> app(new QApplication(argc, argv));
