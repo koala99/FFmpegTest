@@ -1,117 +1,17 @@
+#include "utils.h"
 #include <iostream>
-
-#include <curses.h>
-#include<iostream>
-#include<cstdio>
-#include<cstring>
-#include<algorithm>
-#include<queue>
-#include<vector>
-#include<cmath>
-#include<string>
-#include<iostream>
-#include<cstdio>
-#include<cstring>
-#include<cstdlib>
-#include<algorithm>
-
-#include <stdlib.h>
-#include <stdio.h>
-
-
-#include <vector>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
 
 
 extern "C" {
+#include<libavformat/avformat.h>
+#include<libavcodec/avcodec.h>
+#include<lame/lame.h>
 
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libavutil/mathematics.h>
-
-#include <libavformat/avio.h>
-#include <libavutil/opt.h>
-#include <libswscale/swscale.h>
-#include <libavutil/imgutils.h>
-
-#include <libavutil/avutil.h>
-#include <libswscale/swscale.h>
-#include <libswresample/swresample.h>
-
-
-#include <libavfilter/avfilter.h>
-#include <libavfilter/buffersink.h>
-#include <libavfilter/buffersrc.h>
-#include <libavutil/avassert.h>
-#include <libavutil/channel_layout.h>
-#include <libavutil/timestamp.h>
-
-
-#include <libavutil/avassert.h>
-#include <libavutil/channel_layout.h>
-#include <libavutil/opt.h>
-#include <libavutil/mathematics.h>
-#include <libavutil/timestamp.h>
-#include <libavformat/avformat.h>
-#include <libswscale/swscale.h>
-#include <libswresample/swresample.h>
-
-#include <libavutil/timestamp.h>
-#include <libavformat/avformat.h>
 }
-
-
 using namespace std;
 
 
-void decodeVideo2Yuv();
-//double get_rotation(AVStream *st);
-
-
-int main() {
-    decodeVideo2Yuv();
-    return 0;
-}
-
-//
-///**
-// * 获取视频翻转角度
-// * @param st
-// * @return
-// */
-//double get_rotation(AVStream *st) {
-//    AVDictionaryEntry *rotate_tag = av_dict_get(st->metadata, "rotate", NULL, 0);
-//    double theta = 0;
-//
-//    if (rotate_tag && *rotate_tag->value && strcmp(rotate_tag->value, "0")) {
-//        //char *tail;
-//        //theta = av_strtod(rotate_tag->value, &tail);
-//        theta = atof(rotate_tag->value);
-//        // if (*tail)
-//        // theta = 0;"
-//    }
-//
-//    theta -= 360 * floor(theta / 360 + 0.9 / 360);
-//
-//    if (fabs(theta - 90 * round(theta / 90)) > 2)
-//        printf("Odd rotation angle");
-//
-//    printf("get_rotation %f\n", theta);
-//
-//    return theta;
-//}
-//
-//
-//static double r2d(AVRational avRational) {
-//    return avRational.num == 0 ? 0 : (double) avRational.num / (double) avRational.den;
-//}
-
-
-void decodeVideo2Yuv() {
-
+void decodeVideo2YuvPcm(char *filepath) {
     AVFormatContext *pFormatCtx;
     int i, videoindex, audioindex;
     AVCodecContext *videoCodecCtx,
@@ -125,12 +25,12 @@ void decodeVideo2Yuv() {
     int ret;
     struct SwsContext *img_convert_ctx;
 
-    char filepath[] = "../file/test.mp4";
 
-    FILE *video_fp_yuv = fopen("../file/output.yuv", "wb+");
-    FILE *audio_fp_pcm = fopen("../file/out.pcm", "wb+");
+    FILE *video_fp_yuv = fopen("../file/video.yuv", "wb+");
+    FILE *audio_fp_pcm = fopen("../file/audio.pcm", "wb+");
 
 //    FILE *fp_h264 = fopen("output.h264", "wb+");
+
 
     av_register_all();//注册所有组件
     avformat_network_init();//初始化网络
@@ -210,9 +110,7 @@ void decodeVideo2Yuv() {
                     break;
             }
             // Write pixel data
-            if (videoCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P || videoCodecCtx->pix_fmt == AV_PIX_FMT_YUVJ420P) {
-                printf("YUV420P");
-
+            if (videoCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P|| videoCodecCtx->pix_fmt == AV_PIX_FMT_YUVJ420P) {
                 for (int y = 0; y < vCodecPar->height; y++)
                     fwrite(pFrame->data[0] + y * pFrame->linesize[0], 1, vCodecPar->width, video_fp_yuv);
                 for (int y = 0; y < vCodecPar->height / 2; y++) {
@@ -222,8 +120,8 @@ void decodeVideo2Yuv() {
                     fwrite(pFrame->data[2] + y * pFrame->linesize[2], 1, vCodecPar->width / 2, video_fp_yuv);
                 }
             } else if (videoCodecCtx->pix_fmt == AV_PIX_FMT_YUV422P) {
-                printf("YUV422P");
-            }
+
+            }   // Close file
 
         } else if (packet->stream_index == audioindex) {
             avcodec_send_packet(audioCodecCtx, packet);
@@ -235,13 +133,12 @@ void decodeVideo2Yuv() {
             int data_size = av_get_bytes_per_sample(audioCodecCtx->sample_fmt);
 
 //            if (pFrame->data[0] && pFrame->data[1]) {
-//                printf("双鹿\n");
 //                for (int i = 0; i < pFormatCtx->streams[audioindex]->codec->frame_size; i++) {
 //                    fwrite(pFrame->data[0] + i * size, 1, size, audio_fp_pcm);
 //                    fwrite(pFrame->data[1] + i * size, 1, size, audio_fp_pcm);
 //                }
 //            } else if (pFrame->data[0]) {
-//                printf("\n");
+//                printf("1\n");
 //
 //                fwrite(pFrame->data[0], 1, pFrame->linesize[0], audio_fp_pcm);
 //            }
@@ -269,5 +166,67 @@ void decodeVideo2Yuv() {
     avformat_close_input(&pFormatCtx);
 }
 
+void encodeYuvPcm2Video(char *yuvPath, char *pcmPath) {
+
+}
 
 
+void encodeH264AAac2Video(char *h264Path, char *aacPath) {
+
+}
+
+
+void docedeVideo2H264Aac(char *filepath) {
+
+}
+
+void encodePcm2Mp3(char *pcmPath) {
+    int ret = -1;
+    FILE *pcmFile;
+    FILE *mp3File;
+    lame_t lameClient;
+
+    int sampleRate = 44100;
+
+
+    pcmFile = fopen(pcmPath, "rb");
+    if (pcmFile) {
+        mp3File = fopen("/Users/lilei/Desktop/media_project/test.mp3", "wb+");
+    }
+    if (mp3File) {
+        lameClient = lame_init();
+        lame_set_in_samplerate(lameClient, sampleRate);
+        lame_set_out_samplerate(lameClient, sampleRate);
+        lame_set_num_channels(lameClient, 2);//采样率
+//        lame_set_brate(lameClient, 128);  /* 比特率 */
+        lame_set_quality(lameClient, 2); //0到9 越小越好
+        ret = lame_init_params(lameClient);
+    }
+    if (ret < 0) {
+        cout << "配置参数失败" << endl;
+    } else {
+        cout << "配置参数成功" << endl;
+    }
+    int read, write = 0;
+    int bufferSize = 8192;
+    short int pcm_buffer[bufferSize * 2];
+    unsigned char mp3_buffer[bufferSize];
+    do {
+        read = fread(pcm_buffer, 2 * sizeof(short int), bufferSize, pcmFile);
+        if (read == 0)
+            write = lame_encode_flush(lameClient, mp3_buffer, bufferSize);
+        else
+            write = lame_encode_buffer_interleaved(lameClient, pcm_buffer, read, mp3_buffer, bufferSize);
+        fwrite(mp3_buffer, write, 1, mp3File);
+
+    } while (read != 0);
+//    delete[] pcm_buffer;
+//    delete[] mp3_buffer;
+    if (pcmFile)
+        fclose(pcmFile);
+    if (mp3File) {
+        fclose(mp3File);
+        lame_close(lameClient);
+    }
+
+}
