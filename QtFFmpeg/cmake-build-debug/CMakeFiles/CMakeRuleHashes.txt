@@ -1,4 +1,0 @@
-# Hashes of file build rules.
-96cf4d9dac2fd71c09c35c8da6cda965 CMakeFiles/QtFFmpeg_autogen
-1a7f4cbe73bc2122234d805364879d04 ui_VideoWidget.h
-62b471107d9a59fbeab0a25f5b3b7daa ui_mainwindow.h
