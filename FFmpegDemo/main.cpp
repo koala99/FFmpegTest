@@ -125,10 +125,10 @@ void decodeVideo2Yuv() {
     int ret;
     struct SwsContext *img_convert_ctx;
 
-    char filepath[] = "test.mp4";
+    char filepath[] = "../file/test.mp4";
 
-    FILE *video_fp_yuv = fopen("output.yuv", "wb+");
-    FILE *audio_fp_pcm = fopen("out.pcm", "wb+");
+    FILE *video_fp_yuv = fopen("../file/output.yuv", "wb+");
+    FILE *audio_fp_pcm = fopen("../file/out.pcm", "wb+");
 
 //    FILE *fp_h264 = fopen("output.h264", "wb+");
 
@@ -210,7 +210,9 @@ void decodeVideo2Yuv() {
                     break;
             }
             // Write pixel data
-            if (videoCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P) {
+            if (videoCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P || videoCodecCtx->pix_fmt == AV_PIX_FMT_YUVJ420P) {
+                printf("YUV420P");
+
                 for (int y = 0; y < vCodecPar->height; y++)
                     fwrite(pFrame->data[0] + y * pFrame->linesize[0], 1, vCodecPar->width, video_fp_yuv);
                 for (int y = 0; y < vCodecPar->height / 2; y++) {
@@ -220,8 +222,8 @@ void decodeVideo2Yuv() {
                     fwrite(pFrame->data[2] + y * pFrame->linesize[2], 1, vCodecPar->width / 2, video_fp_yuv);
                 }
             } else if (videoCodecCtx->pix_fmt == AV_PIX_FMT_YUV422P) {
-
-            }   // Close file
+                printf("YUV422P");
+            }
 
         } else if (packet->stream_index == audioindex) {
             avcodec_send_packet(audioCodecCtx, packet);
@@ -239,7 +241,7 @@ void decodeVideo2Yuv() {
 //                    fwrite(pFrame->data[1] + i * size, 1, size, audio_fp_pcm);
 //                }
 //            } else if (pFrame->data[0]) {
-//                printf("1鹿\n");
+//                printf("\n");
 //
 //                fwrite(pFrame->data[0], 1, pFrame->linesize[0], audio_fp_pcm);
 //            }
