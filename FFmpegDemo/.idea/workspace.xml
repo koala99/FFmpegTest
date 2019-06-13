@@ -14,7 +14,6 @@
     <list default="true" id="f0990064-369c-4647-9277-14da5240c80c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,15 +25,15 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="226" column="62" lean-forward="true" selection-start-line="226" selection-start-column="62" selection-end-line="226" selection-end-column="62" />
+            <state relative-caret-position="198">
+              <caret line="234" column="57" lean-forward="true" selection-start-line="234" selection-start-column="57" selection-end-line="234" selection-end-column="57" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
                 <element signature="e#426#457#0" expanded="true" />
-                <marker date="1560414071765" expanded="true" signature="1402:1424" ph="..." />
+                <marker date="1560414306006" expanded="true" signature="1402:1424" ph="..." />
               </folding>
             </state>
           </provider>
@@ -58,11 +57,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="1" column="5" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
+            <state relative-caret-position="38">
+              <caret line="2" column="6" lean-forward="true" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -144,9 +143,9 @@
         <option value="$PROJECT_DIR$/main2.cpp" />
         <option value="$PROJECT_DIR$/squares.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/redeme" />
         <option value="$PROJECT_DIR$/main.cpp" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -171,11 +170,6 @@
             <path>
               <item name="FFmpegDemo" type="b2602c69:ProjectViewProjectNode" />
               <item name="FFmpegDemo" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FFmpegDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FFmpegDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="cmake-build-debug" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="FFmpegDemo" type="b2602c69:ProjectViewProjectNode" />
@@ -286,12 +280,12 @@
       <workItem from="1551841947288" duration="2081000" />
       <workItem from="1554895342734" duration="1188000" />
       <workItem from="1560400639034" duration="1528000" />
-      <workItem from="1560403300563" duration="5520000" />
+      <workItem from="1560403300563" duration="5837000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="288490000" />
+    <option name="totallyTimeSpent" value="288807000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -304,19 +298,20 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1455" y="371" width="1964" height="1311" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2596254" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2596254" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6508845" weight="0.5518395" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6503642" weight="0.5518395" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4697209" weight="0.38539553" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49367088" weight="0.32845187" />
-      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.41675338" side_tool="true" visible="true" weight="0.3277592" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.5832466" visible="true" weight="0.3277592" />
+      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.41727367" side_tool="true" visible="true" weight="0.4548495" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.5827263" visible="true" weight="0.4548495" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.34808066" side_tool="true" weight="0.38378906" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="CMake" order="11" sideWeight="0.47625244" weight="0.375" />
@@ -414,13 +409,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="5" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/redeme">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
@@ -444,13 +432,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="226" column="62" lean-forward="true" selection-start-line="226" selection-start-column="62" selection-end-line="226" selection-end-column="62" />
+        <state relative-caret-position="198">
+          <caret line="234" column="57" lean-forward="true" selection-start-line="234" selection-start-column="57" selection-end-line="234" selection-end-column="57" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
             <element signature="e#426#457#0" expanded="true" />
-            <marker date="1560414071765" expanded="true" signature="1402:1424" ph="..." />
+            <marker date="1560414306006" expanded="true" signature="1402:1424" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="6" lean-forward="true" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
         </state>
       </provider>
     </entry>
