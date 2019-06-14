@@ -110,7 +110,7 @@ void decodeVideo2YuvPcm(char *filepath) {
                     break;
             }
             // Write pixel data
-            if (videoCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P|| videoCodecCtx->pix_fmt == AV_PIX_FMT_YUVJ420P) {
+            if (videoCodecCtx->pix_fmt == AV_PIX_FMT_YUV420P || videoCodecCtx->pix_fmt == AV_PIX_FMT_YUVJ420P) {
                 for (int y = 0; y < vCodecPar->height; y++)
                     fwrite(pFrame->data[0] + y * pFrame->linesize[0], 1, vCodecPar->width, video_fp_yuv);
                 for (int y = 0; y < vCodecPar->height / 2; y++) {
@@ -180,7 +180,7 @@ void docedeVideo2H264Aac(char *filepath) {
 
 }
 
-void encodePcm2Mp3(char *pcmPath) {
+void encodePcm2Mp3(char *mp3Path, char *pcmPath) {
     int ret = -1;
     FILE *pcmFile;
     FILE *mp3File;
@@ -191,7 +191,7 @@ void encodePcm2Mp3(char *pcmPath) {
 
     pcmFile = fopen(pcmPath, "rb");
     if (pcmFile) {
-        mp3File = fopen("/Users/lilei/Desktop/media_project/test.mp3", "wb+");
+        mp3File = fopen(mp3Path, "wb+");
     }
     if (mp3File) {
         lameClient = lame_init();
@@ -230,3 +230,269 @@ void encodePcm2Mp3(char *pcmPath) {
     }
 
 }
+
+
+void changeMp3(char *videoPath, char *mp3Path) {
+    AVOutputFormat *pOutputFmt = NULL;
+    AVFormatContext *pVideoInFmtCxt = NULL;//输入的视频的FormatContext
+    AVFormatContext *pAudioInFmtCxt = NULL;//输入的音频的FormatContext
+    AVFormatContext *pOutFmtCxt = NULL;//输出的音视频的FormatContext
+    AVPacket pkt;
+    int ret, i;
+    int videoindex_v = -1, videoindex_out = -1;
+    int audioindex_a = -1, audioindex_out = -1;
+    int frame_index = 0;
+    int64_t cur_pts_v = 0;//视频的pts
+    int64_t cur_pts_a = 0;//音频的pts
+
+    char errorbuf[1024] = {0};
+
+    const char *pVideoOutFilePath = "outBg.mp4";
+
+
+    av_register_all();
+    //打开输入的视频文件
+    if ((ret = avformat_open_input(&pVideoInFmtCxt, videoPath, NULL, NULL)) < 0) {
+        printf("Could not open input video file.");
+        return;
+    }
+    //获取视频文件信息
+    if ((ret = avformat_find_stream_info(pVideoInFmtCxt, NULL)) < 0) {
+        printf("Failed to retrieve input video stream information");
+        return;
+    }
+
+    //打开输入的音频文件
+    if ((ret = avformat_open_input(&pAudioInFmtCxt, mp3Path, NULL, NULL)) < 0) {
+        printf("Could not open input audio file.");
+        return;
+    }
+    //获取音频文件信息
+    if ((ret = avformat_find_stream_info(pAudioInFmtCxt, NULL)) < 0) {
+        printf("Failed to retrieve input stream information");
+        return;
+    }
+
+    //初始化输出码流的AVFormatContext //pOutFmtCxt,NULL,NULL,pVideoOutFilePath
+    avformat_alloc_output_context2(&pOutFmtCxt, NULL, NULL, pVideoOutFilePath);
+    if (!pOutFmtCxt) {
+        printf("Could not create output context\n");
+        ret = AVERROR_UNKNOWN;
+        return;
+    }
+
+    pOutputFmt = pOutFmtCxt->oformat;
+
+    //从输入的AVStream中获取一个输出的out_stream，视频输出流
+    for (i = 0; i < pVideoInFmtCxt->nb_streams; i++) {
+        //根据输入的视频流创建一个输出的视频流
+        if (pVideoInFmtCxt->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+            AVStream *in_stream = pVideoInFmtCxt->streams[i];
+            //创建输出流通道AVStream
+            AVCodecContext *pCodecCtx = avcodec_alloc_context3(NULL);
+            if (pCodecCtx == NULL) {
+                printf("Could not allocate AVCodecContext\n");
+                return;
+            }
+            avcodec_parameters_to_context(pCodecCtx, in_stream->codecpar);
+
+            AVStream *out_stream = avformat_new_stream(pOutFmtCxt, pCodecCtx->codec);
+            videoindex_v = i;
+            if (!out_stream) {
+                printf("Failed allocating output stream\n");
+                ret = AVERROR_UNKNOWN;
+                break;
+            }
+            videoindex_out = out_stream->index;
+
+            //Copy the settings of AVCodecContext
+            if ((ret = avcodec_parameters_from_context(out_stream->codecpar, pCodecCtx)) < 0) {
+                printf("Failed to copy codec context to out_stream codecpar context\n");
+                return;
+            }
+
+            pCodecCtx->codec_tag = 0;
+            if (pOutFmtCxt->oformat->flags & AVFMT_GLOBALHEADER)
+                pCodecCtx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+            break;
+        }
+    }
+
+    //从输入的AVStream中获取一个输出的out_stream，音频输出流
+    for (i = 0; i < pAudioInFmtCxt->nb_streams; i++) {
+        if (pAudioInFmtCxt->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+            AVStream *in_stream = pAudioInFmtCxt->streams[i];
+            //创建输出流通道AVStream
+            AVCodecContext *pCodecCtx = avcodec_alloc_context3(NULL);
+            if (pCodecCtx == NULL) {
+                printf("Could not allocate AVCodecContext\n");
+                return;
+            }
+            avcodec_parameters_to_context(pCodecCtx, in_stream->codecpar);
+            AVStream *out_stream = avformat_new_stream(pOutFmtCxt, pCodecCtx->codec);
+
+            audioindex_a = i;
+            if (!out_stream) {
+                printf("Failed allocating output stream\n");
+                ret = AVERROR_UNKNOWN;
+                return;
+            }
+            audioindex_out = out_stream->index;
+
+            if ((ret = avcodec_parameters_from_context(out_stream->codecpar, pCodecCtx)) < 0) {
+                printf("Failed to copy codec context to out_stream codecpar context\n");
+                return;
+            }
+
+            pCodecCtx->codec_tag = 0;
+            if (pOutFmtCxt->oformat->flags & AVFMT_GLOBALHEADER)
+                pCodecCtx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+            break;
+        }
+    }
+
+    //打开输出文件
+    if (!(pOutputFmt->flags & AVFMT_NOFILE)) {
+        if (avio_open(&pOutFmtCxt->pb, pVideoOutFilePath, AVIO_FLAG_WRITE) < 0) {//打开输出文件。
+            printf("Could not open output file '%s'", pVideoOutFilePath);
+            return;
+        }
+    }
+
+    //写文件头
+    if (avformat_write_header(pOutFmtCxt, NULL) < 0) {
+        printf("Error occurred when opening output file\n");
+        return;
+    }
+
+#if USE_H264BSF
+    AVBitStreamFilterContext* h264bsfc =  av_bitstream_filter_init("h264_mp4toannexb");
+#endif
+#if USE_AACBSF
+    AVBitStreamFilterContext* aacbsfc =  av_bitstream_filter_init("aac_adtstoasc");
+#endif
+    while (1) {
+        AVFormatContext *pInFmtCtx;
+        int stream_index = 0;
+        AVStream *in_stream, *out_stream;
+        // av_compare_ts是比较时间戳用的。通过该函数可以决定该写入视频还是音频
+        if (av_compare_ts(cur_pts_v, pVideoInFmtCxt->streams[videoindex_v]->time_base,
+                          cur_pts_a, pAudioInFmtCxt->streams[audioindex_a]->time_base) <= 0) {
+            //printf("写视频数据");
+            pInFmtCtx = pVideoInFmtCxt;//视频
+            //这里要赋值了，注意注意
+            stream_index = videoindex_out;
+
+            if (av_read_frame(pInFmtCtx, &pkt) >= 0) {//读取流
+                do {
+                    in_stream = pInFmtCtx->streams[pkt.stream_index];
+                    out_stream = pOutFmtCxt->streams[stream_index];
+
+                    if (pkt.stream_index == videoindex_v) {
+                        // H.264裸流没有PTS，因此必须手动写入PTS
+                        if (pkt.pts == AV_NOPTS_VALUE) {
+                            //写PTS
+                            AVRational time_base1 = in_stream->time_base;
+                            //Duration between 2 frames (us)
+                            int64_t calc_duration = (double) AV_TIME_BASE / av_q2d(in_stream->r_frame_rate);
+                            //Parameters
+                            pkt.pts = (double) (frame_index * calc_duration) /
+                                      (double) (av_q2d(time_base1) * AV_TIME_BASE);
+                            pkt.dts = pkt.pts;
+                            pkt.duration = (double) calc_duration / (double) (av_q2d(time_base1) * AV_TIME_BASE);
+                            frame_index++;
+                        }
+                        cur_pts_v = pkt.pts;
+                        //printf("cur_pts_v === %lld",cur_pts_v);
+                        break;
+                    }
+                } while (av_read_frame(pInFmtCtx, &pkt) >= 0);
+            } else {
+                break;
+            }
+        } else {
+            printf("写音频数据");
+            pInFmtCtx = pAudioInFmtCxt;
+            stream_index = audioindex_out;
+            if (av_read_frame(pInFmtCtx, &pkt) >= 0) {
+                do {
+                    in_stream = pInFmtCtx->streams[pkt.stream_index];
+                    out_stream = pOutFmtCxt->streams[stream_index];
+
+                    if (pkt.stream_index == audioindex_a) {
+                        //FIX：No PTS
+                        //Simple Write PTS
+                        if (pkt.pts == AV_NOPTS_VALUE) {
+                            //Write PTS
+                            AVRational time_base1 = in_stream->time_base;
+                            //Duration between 2 frames (us)
+                            int64_t calc_duration = (double) AV_TIME_BASE / av_q2d(in_stream->r_frame_rate);
+                            //Parameters
+                            pkt.pts = (double) (frame_index * calc_duration) /
+                                      (double) (av_q2d(time_base1) * AV_TIME_BASE);
+                            pkt.dts = pkt.pts;
+                            pkt.duration = (double) calc_duration / (double) (av_q2d(time_base1) * AV_TIME_BASE);
+                            frame_index++;
+                        }
+                        cur_pts_a = pkt.pts;
+                        printf("cur_pts_a === %lld", cur_pts_a);
+                        break;
+                    }
+                } while (av_read_frame(pInFmtCtx, &pkt) >= 0);
+            } else {
+                break;
+            }
+
+        }
+        //FIX:Bitstream Filter
+#if USE_H264BSF
+        av_bitstream_filter_filter(h264bsfc, in_stream->codec, NULL, &pkt.data, &pkt.size, pkt.data, pkt.size, 0);
+#endif
+#if USE_AACBSF
+        av_bitstream_filter_filter(aacbsfc, out_stream->codec, NULL, &pkt.data, &pkt.size, pkt.data, pkt.size, 0);
+#endif
+        printf("pkt.pts = %lld ", pkt.pts);
+        //Convert PTS/DTS
+        pkt.pts = av_rescale_q_rnd(pkt.pts, in_stream->time_base, out_stream->time_base,
+                                   (AVRounding) (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
+        printf("pkt.pts == %lld", pkt.pts);
+        pkt.dts = av_rescale_q_rnd(pkt.dts, in_stream->time_base, out_stream->time_base,
+                                   (AVRounding) (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
+        pkt.duration = av_rescale_q(pkt.duration, in_stream->time_base, out_stream->time_base);
+        pkt.pos = -1;
+        pkt.stream_index = stream_index;
+        printf("Write 1 Packet. size:%5d\tpts:%lld\n", pkt.size, pkt.pts);
+        //Write AVPacket 音频或视频裸流
+        if ((ret = av_interleaved_write_frame(pOutFmtCxt, &pkt)) < 0) {
+            av_strerror(ret, errorbuf, sizeof(errorbuf));
+            printf("ERROR : %s", errorbuf);
+            printf("Error muxing packet error code === %d\n", ret);
+            av_packet_unref(&pkt);
+            break;
+        }
+        //av_free_packet(&pkt);
+        av_packet_unref(&pkt);
+    }
+
+    //写文件尾
+    av_write_trailer(pOutFmtCxt);
+
+#if USE_H264BSF
+    av_bitstream_filter_close(h264bsfc);
+#endif
+#if USE_AACBSF
+    av_bitstream_filter_close(aacbsfc);
+#endif
+
+    avformat_close_input(&pVideoInFmtCxt);
+    avformat_close_input(&pAudioInFmtCxt);
+    if (pOutFmtCxt && !(pOutputFmt->flags & AVFMT_NOFILE))
+        avio_close(pOutFmtCxt->pb);
+    avformat_free_context(pOutFmtCxt);
+    if (ret < 0 && ret != AVERROR_EOF) {
+        printf("Error occurred.\n");
+        return;
+    }
+}
+
+
