@@ -17,4 +17,7 @@ void encodePcm2Mp3(char *mp3Path, char *pcmPath);
 
 void changeMp3(char *videoPath, char *mp3Path);
 
+
+void sdl2Player(char *videoPath);
+
 #endif //VIDEODEMO_UTILS_H
