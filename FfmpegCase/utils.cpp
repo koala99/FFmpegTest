@@ -266,16 +266,6 @@ void changeMp3(char *videoPath, char *mp3Path) {
         return;
     }
 
-    //打开输入的音频文件
-    if ((ret = avformat_open_input(&pAudioInFmtCxt, mp3Path, NULL, NULL)) < 0) {
-        printf("Could not open input audio file.");
-        return;
-    }
-    //获取音频文件信息
-    if ((ret = avformat_find_stream_info(pAudioInFmtCxt, NULL)) < 0) {
-        printf("Failed to retrieve input stream information");
-        return;
-    }
 
     //初始化输出码流的AVFormatContext //pOutFmtCxt,NULL,NULL,pVideoOutFilePath
     avformat_alloc_output_context2(&pOutFmtCxt, NULL, NULL, pVideoOutFilePath);
@@ -499,119 +489,176 @@ void changeMp3(char *videoPath, char *mp3Path) {
     }
 }
 
+void sdl2Player(char *file) {
+    AVFormatContext *pFormatCtx = NULL;
+    int videoStream;
+    AVCodecParameters *pCodecParameters = NULL;
+    AVCodecContext *pCodecCtx = NULL;
+    AVCodec *pCodec = NULL;
+    AVFrame *pFrame = NULL;
+    AVPacket packet;
 
-void sdl2Player(char *videoPath) {
-    AVFormatContext *pFormatCtx;
-    int videoIndex = -1;
-    AVCodecContext *pCodecCtx;
-    AVCodec *pCodec;
-    // init
-    av_register_all();
-    avformat_network_init();
-    pFormatCtx = avformat_alloc_context();
-    if (avformat_open_input(&pFormatCtx, videoPath, NULL, NULL) < 0) {
-        printf("Could not open input video file.");
-        return;
-    }
-    if (avformat_find_stream_info(pFormatCtx, NULL) < 0) {
-        printf("Could not get video stream.");
-        return;
-    }
-    for (int i = 0; i < pFormatCtx->nb_streams; i++) {
-        if (pFormatCtx->streams[i]->codec->codec_type = AVMEDIA_TYPE_VIDEO) {
-            videoIndex = i;
-        }
-    }
-    if (videoIndex == -1) {
-        printf("Could not get video stream.");
-        return;
-    }
-    pCodecCtx = pFormatCtx->streams[videoIndex]->codec;
-    pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
-    if (pCodec == NULL) {
-        printf("Codec not found.\n");
-        return;
-    }
-    if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
-        printf("Could not open codec.");
-        return;
-    }
-    AVFrame *pFrame, *pFrameYUV;
-    pFrame = av_frame_alloc();
-    pFrameYUV = av_frame_alloc();
-    uint8_t *out_buffer;
-    out_buffer = new uint8_t(av_image_get_buffer_size(AV_PIX_FMT_YUV420P, pCodecCtx->width,
-                                                      pCodecCtx->height, 1));
-    av_image_fill_arrays(pFrameYUV->data, pFrameYUV->linesize, out_buffer, AV_PIX_FMT_YUV420P,
-                         pCodecCtx->width, pCodecCtx->height, 1);
-
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER)) {
-        printf("Could not initialize SDL - %s\n", SDL_GetError());
-        return;
-    }
-    SDL_Window *screen = SDL_CreateWindow("play video ",
-                                          SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                          pCodecCtx->width, pCodecCtx->height,
-                                          SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-    if (!screen) {
-        printf("can't set video mode");
-        return;
-    }
-    SDL_Renderer *sdl_renderer = SDL_CreateRenderer(screen, -1, 0);
-    SDL_Texture *sdl_texture = SDL_CreateTexture(sdl_renderer, SDL_PIXELFORMAT_YV12,
-                                                 SDL_TEXTUREACCESS_STREAMING, pCodecCtx->width, pCodecCtx->height);
     SDL_Rect rect;
-    int ret, got_picture;
-    static struct SwsContext *img_convert_ctx;
-    int y_size = pCodecCtx->width * pCodecCtx->height;
-    SDL_Event event;
-    AVPacket *packet = (AVPacket *) malloc(sizeof(AVPacket));//存储解码前数据包AVPacket
-    av_new_packet(packet, y_size);
+    Uint32 pixformat;
+    SDL_Window *win = NULL;
+    SDL_Renderer *renderer = NULL;
+    SDL_Texture *texture = NULL;
 
-    while (av_read_frame(pFormatCtx, packet) >= 0) {
-        if (packet->stream_index == videoIndex) {
-            ret = avcodec_send_packet(pCodecCtx, packet);//解码。输入为AVPacket，输出为AVFrame
-            if (ret != 0) {
-                return;
+    //默认窗口大小
+    int w_width = 640;
+    int w_height = 480;
+
+    //SDL初始化
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER)) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Could not initialize SDL - %s\n", SDL_GetError());
+        return;
+    }
+
+
+    // 打开输入文件
+    if (avformat_open_input(&pFormatCtx, file, NULL, NULL) != 0) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't open  video file!");
+        goto __FAIL;
+    }
+
+    //找到视频流
+    videoStream = av_find_best_stream(pFormatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
+    if (videoStream == -1) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Din't find a video stream!");
+        goto __FAIL;// Didn't find a video stream
+    }
+
+    // 流参数
+    pCodecParameters = pFormatCtx->streams[videoStream]->codecpar;
+
+    //获取解码器
+    pCodec = avcodec_find_decoder(pCodecParameters->codec_id);
+    if (pCodec == NULL) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unsupported codec!\n");
+        goto __FAIL; // Codec not found
+    }
+
+    // 初始化一个编解码上下文
+    pCodecCtx = avcodec_alloc_context3(pCodec);
+    if (avcodec_parameters_to_context(pCodecCtx, pCodecParameters) != 0) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't copy codec context");
+        goto __FAIL;// Error copying codec context
+    }
+
+    // 打开解码器
+    if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to open decoder!\n");
+        goto __FAIL; // Could not open codec
+    }
+
+    // Allocate video frame
+    pFrame = av_frame_alloc();
+
+    w_width = pCodecCtx->width;
+    w_height = pCodecCtx->height;
+
+    //创建窗口
+    win = SDL_CreateWindow("播放器",
+                           SDL_WINDOWPOS_UNDEFINED,
+                           SDL_WINDOWPOS_UNDEFINED,
+                           w_width, w_height,
+                           SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    if (!win) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create window by SDL");
+        goto __FAIL;
+    }
+
+    //创建渲染器
+    renderer = SDL_CreateRenderer(win, -1, 0);
+    if (!renderer) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create Renderer by SDL");
+        goto __FAIL;
+    }
+
+    pixformat = SDL_PIXELFORMAT_IYUV;//YUV格式
+    // 创建纹理
+    texture = SDL_CreateTexture(renderer,
+                                pixformat,
+                                SDL_TEXTUREACCESS_STREAMING,
+                                w_width,
+                                w_height);
+
+
+    //读取数据
+    while (av_read_frame(pFormatCtx, &packet) >= 0) {
+        if (packet.stream_index == videoStream) {
+            //解码
+            avcodec_send_packet(pCodecCtx, &packet);
+            while (avcodec_receive_frame(pCodecCtx, pFrame) == 0) {
+
+                SDL_UpdateYUVTexture(texture, NULL,
+                                     pFrame->data[0], pFrame->linesize[0],
+                                     pFrame->data[1], pFrame->linesize[1],
+                                     pFrame->data[2], pFrame->linesize[2]);
+
+                // Set Size of Window
+                rect.x = 0;
+                rect.y = 0;
+                rect.w = pCodecCtx->width;
+                rect.h = pCodecCtx->height;
+
+                //展示
+                SDL_RenderClear(renderer);
+                SDL_RenderCopy(renderer, texture, NULL, &rect);
+                SDL_RenderPresent(renderer);
             }
-            ret = avcodec_receive_frame(pCodecCtx, pFrame);
-            if (ret != 0)
-                return;
-            img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt, pCodecCtx->width,
-                                             pCodecCtx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL);
-            sws_scale(img_convert_ctx, (const uint8_t *const *) pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
-                      pFrameYUV->data, pFrameYUV->linesize);
-            sws_freeContext(img_convert_ctx);
-            //------------SDL显示--------
-            rect.x = 0;
-            rect.y = 0;
-            rect.w = pCodecCtx->width;
-            rect.h = pCodecCtx->height;
-
-            SDL_UpdateTexture(sdl_texture, &rect, pFrameYUV->data[0], pFrameYUV->linesize[0]);
-            SDL_RenderClear(sdl_renderer);
-            SDL_RenderCopy(sdl_renderer, sdl_texture, &rect, &rect);
-            SDL_RenderPresent(sdl_renderer);
-            //延时20ms
-            SDL_Delay(20);
         }
-        av_packet_unref(packet);
+
+        av_packet_unref(&packet);
+
+        // 事件处理
+        SDL_Event event;
         SDL_PollEvent(&event);
         switch (event.type) {
             case SDL_QUIT:
-                SDL_Quit();
-                exit(0);
-                break;
+                goto __QUIT;
             default:
                 break;
         }
-    }
-    SDL_DestroyTexture(sdl_texture);
-    delete[] out_buffer;
-    av_free(pFrameYUV);
-    avcodec_close(pCodecCtx);
-    avformat_close_input(&pFormatCtx);
-}
 
+
+    }
+
+    __QUIT:
+
+    __FAIL:
+    // Free the YUV frame
+    if (pFrame) {
+        av_frame_free(&pFrame);
+    }
+
+    // Close the codec
+    if (pCodecCtx) {
+        avcodec_close(pCodecCtx);
+    }
+
+    if (pCodecParameters) {
+        avcodec_parameters_free(&pCodecParameters);
+    }
+
+    // Close the video file
+    if (pFormatCtx) {
+        avformat_close_input(&pFormatCtx);
+    }
+
+    if (win) {
+        SDL_DestroyWindow(win);
+    }
+
+    if (renderer) {
+        SDL_DestroyRenderer(renderer);
+    }
+
+    if (texture) {
+        SDL_DestroyTexture(texture);
+    }
+
+    SDL_Quit();
+}
 
 
