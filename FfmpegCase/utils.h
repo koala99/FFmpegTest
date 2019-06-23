@@ -20,4 +20,7 @@ void changeMp3(char *videoPath, char *mp3Path);
 
 void sdl2Player(char *videoPath);
 
+void clipVideo(char *in_filename, char *out_filename, double start_seconds, double end_seconds);
+
+
 #endif //VIDEODEMO_UTILS_H

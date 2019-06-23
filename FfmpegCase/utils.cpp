@@ -627,7 +627,6 @@ void sdl2Player(char *file) {
     __QUIT:
 
     __FAIL:
-    // Free the YUV frame
     if (pFrame) {
         av_frame_free(&pFrame);
     }
@@ -661,4 +660,138 @@ void sdl2Player(char *file) {
     SDL_Quit();
 }
 
+void clipVideo(char *in_filename, char *out_filename, double start_seconds, double end_seconds) {
 
+    AVFormatContext *ifmt_ctx = NULL;
+    AVFormatContext *ofmt_ctx = NULL;
+    AVOutputFormat *ofmt = NULL;
+    AVPacket pkt;
+    int ret;
+
+    avformat_open_input(&ifmt_ctx, in_filename, 0, 0);
+
+//本质上调用了avformat_alloc_context、av_guess_format这两个函数，即创建了输出上下文，又根据输出文件后缀生成了最适合的输出容器
+    avformat_alloc_output_context2(&ofmt_ctx, NULL, NULL, out_filename);
+    ofmt = ofmt_ctx->oformat;
+
+
+    for (int i = 0; i < ifmt_ctx->nb_streams; i++) {
+        AVStream *in_stream = ifmt_ctx->streams[i];
+        AVStream *out_stream = avformat_new_stream(ofmt_ctx, NULL);
+        if (!out_stream) {
+            fprintf(stderr, "Failed allocating output stream\n");
+            ret = AVERROR_UNKNOWN;
+            return;
+        }
+        avcodec_parameters_copy(out_stream->codecpar, in_stream->codecpar);
+        out_stream->codecpar->codec_tag = 0;
+    }
+    avio_open(&ofmt_ctx->pb, out_filename, AVIO_FLAG_WRITE);
+    // 写头信息
+    ret = avformat_write_header(ofmt_ctx, NULL);
+    if (ret < 0) {
+        fprintf(stderr, "Error occurred when opening output file\n");
+        return;
+    }
+
+//跳转到指定帧
+    ret = av_seek_frame(ifmt_ctx, -1, start_seconds * AV_TIME_BASE, AVSEEK_FLAG_ANY);
+    if (ret < 0) {
+        fprintf(stderr, "Error seek\n");
+        return;
+    }
+
+// 根据流数量申请空间，并全部初始化为0
+    int64_t dts_start_from = (int64_t) malloc(sizeof(int64_t) * ifmt_ctx->nb_streams);
+    memset(&dts_start_from, 0, sizeof(int64_t) * ifmt_ctx->nb_streams);
+
+    int64_t pts_start_from = (int64_t) malloc(sizeof(int64_t) * ifmt_ctx->nb_streams);
+//    int p = (int )malloc(len * sizeof(int))
+    memset(&pts_start_from, 0, sizeof(int64_t) * ifmt_ctx->nb_streams);
+
+    while (1) {
+        AVStream *in_stream, *out_stream;
+
+        //读取数据
+        ret = av_read_frame(ifmt_ctx, &pkt);
+        if (ret < 0)
+            break;
+
+        in_stream = ifmt_ctx->streams[pkt.stream_index];
+        out_stream = ofmt_ctx->streams[pkt.stream_index];
+
+        // 时间超过要截取的时间，就退出循环
+        if (av_q2d(in_stream->time_base) * pkt.pts > end_seconds) {
+            av_packet_unref(&pkt);
+            break;
+        }
+// 根据流数量申请空间，并全部初始化为0
+        int64_t *dts_start_from = (int64_t *)malloc(sizeof(int64_t) * ifmt_ctx->nb_streams);
+        memset(dts_start_from, 0, sizeof(int64_t) * ifmt_ctx->nb_streams);
+
+        int64_t *pts_start_from = (int64_t *)malloc(sizeof(int64_t) * ifmt_ctx->nb_streams);
+        memset(pts_start_from, 0, sizeof(int64_t) * ifmt_ctx->nb_streams);
+
+        while (1) {
+            AVStream *in_stream, *out_stream;
+
+            //读取数据
+            ret = av_read_frame(ifmt_ctx, &pkt);
+            if (ret < 0)
+                break;
+
+            in_stream = ifmt_ctx->streams[pkt.stream_index];
+            out_stream = ofmt_ctx->streams[pkt.stream_index];
+
+            // 时间超过要截取的时间，就退出循环
+            if (av_q2d(in_stream->time_base) * pkt.pts > end_seconds) {
+                av_packet_unref(&pkt);
+                break;
+            }
+
+            // 将截取后的每个流的起始dts 、pts保存下来，作为开始时间，用来做后面的时间基转换
+            if (dts_start_from[pkt.stream_index] == 0) {
+                dts_start_from[pkt.stream_index] = pkt.dts;
+            }
+            if (pts_start_from[pkt.stream_index] == 0) {
+                pts_start_from[pkt.stream_index] = pkt.pts;
+            }
+             int64_t  diff1= pkt.pts - pts_start_from[pkt.stream_index];
+            // 时间基转换
+            pkt.pts = av_rescale_q_rnd(diff1, in_stream->time_base,
+                    out_stream->time_base,(AVRounding) (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
+            pkt.dts = av_rescale_q_rnd(pkt.dts - dts_start_from[pkt.stream_index], in_stream->time_base,
+                                       out_stream->time_base,(AVRounding) (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
+
+            if (pkt.pts < 0) {
+                pkt.pts = 0;
+            }
+            if (pkt.dts < 0) {
+                pkt.dts = 0;
+            }
+
+            pkt.duration = (int) av_rescale_q((int64_t) pkt.duration, in_stream->time_base, out_stream->time_base);
+            pkt.pos = -1;
+
+            //一帧视频播放时间必须在解码时间点之后，当出现pkt.pts < pkt.dts时会导致程序异常，所以我们丢掉有问题的帧，不会有太大影响。
+            if (pkt.pts < pkt.dts) {
+                continue;
+            }
+
+            ret = av_interleaved_write_frame(ofmt_ctx, &pkt);
+            if (ret < 0) {
+                fprintf(stderr, "Error write packet\n");
+                break;
+            }
+
+            av_packet_unref(&pkt);
+        }
+
+//释放资源
+        free(dts_start_from);
+        free(pts_start_from);
+
+//写文件尾信息
+        av_write_trailer(ofmt_ctx);
+    }
+}
