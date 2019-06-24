@@ -14,7 +14,7 @@ int main() {
 //                       "/Users/lilei/Desktop/media_project/audio.pcm");
 //    encodePcm2Mp3("/Users/lilei/Desktop/media_project/audio.pcm");
 
-    clipVideo("../file/test.mp4", "../file/test1.mp4", 5.0, 15.0);
+    clipVideo("../file/test.mp4", "test1.mp4", 5.0, 15.0);
     return 0;
 }
 
