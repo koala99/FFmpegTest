@@ -14,10 +14,15 @@ int main() {
 //                       "/Users/lilei/Desktop/media_project/audio.pcm");
 //    encodePcm2Mp3("/Users/lilei/Desktop/media_project/audio.pcm");
 
-    clipVideo("../file/test.mp4", "test1.mp4", 5.0, 15.0);
+//    clipVideo("../file/test.mp4", "test1.mp4", 5.0, 15.0);
+    audioPlayer("../file/test.mp4");
     return 0;
 }
 
 
 //yuv420p:标准yuv格式 I420
 //YV12和
+/**
+ * DTS（Decoding Time Stamp）：即解码时间戳，这个时间戳的意义在于告诉播放器该在什么时候解码这一帧的数据。
+   PTS（Presentation Time Stamp）：即显示时间戳，这个时间戳用来告诉播放器该在什么时候显示这一帧的数据。
+ */

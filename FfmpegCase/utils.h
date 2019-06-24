@@ -22,5 +22,9 @@ void sdl2Player(char *videoPath);
 
 void clipVideo(char *in_filename, char *out_filename, double start_seconds, double end_seconds);
 
+void sdl2PlayerNormal(char *videoPath);
+
+void audioPlayer(char *audioPath);
+
 
 #endif //VIDEODEMO_UTILS_H
