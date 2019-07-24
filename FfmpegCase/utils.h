@@ -26,5 +26,8 @@ void sdl2PlayerNormal(char *videoPath);
 
 void audioPlayer(char *audioPath);
 
+void pushStream(char *inStream, char *url);
+
+void pushCamera();
 
 #endif //VIDEODEMO_UTILS_H

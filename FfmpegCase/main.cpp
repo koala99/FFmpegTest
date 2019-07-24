@@ -15,7 +15,8 @@ int main() {
 //    encodePcm2Mp3("/Users/lilei/Desktop/media_project/audio.pcm");
 
 //    clipVideo("../file/test.mp4", "test1.mp4", 5.0, 15.0);
-    audioPlayer("../file/test.mp4");
+//    audioPlayer("../file/test.mp4");
+    pushStream("../file/test.mp4","rtmp://koala999.club/live/aaa");
     return 0;
 }
 
